@@ -6,8 +6,6 @@
 
 [Deutsch](README.de.md)
 
-# GardenFlow
-
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.111-green)
 ![MQTT](https://img.shields.io/badge/MQTT-Mosquitto-orange)
