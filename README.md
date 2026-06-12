@@ -1,3 +1,9 @@
+<div align="center">
+  <img src="RayStudio.png" alt="RayStudio Logo" width="120"/>
+
+  <h1>GardenFlow</h1>
+</div>
+
 [Deutsch](README.de.md)
 
 # GardenFlow
@@ -145,5 +151,10 @@ curl -X POST http://localhost:8000/api/rules \
 MIT
 
 ---
+
+<div align="right">
+  <sub>by</sub><br/>
+  <img src="RayStudio.png" alt="RayStudio" width="70"/>
+</div>
 
 **Author:** [Rafael Yilmaz](https://github.com/9t29zhmwdh-coder) · **Status:** Framework Preview · **Last Updated:** June 2026
