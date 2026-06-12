@@ -1,3 +1,9 @@
+<div align="center">
+  <img src="RayStudio.png" alt="RayStudio Logo" width="120"/>
+
+  <h1>GardenFlow</h1>
+</div>
+
 [English](README.md)
 
 # GardenFlow
@@ -147,3 +153,8 @@ MIT
 ---
 
 **Autor:** [Rafael Yilmaz](https://github.com/9t29zhmwdh-coder) · **Status:** Framework Preview · **Zuletzt aktualisiert:** Juni 2026
+
+<div align="right">
+  <sub>by</sub><br/>
+  <img src="RayStudio.png" alt="RayStudio" width="70"/>
+</div>
