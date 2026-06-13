@@ -144,11 +144,6 @@ curl -X POST http://localhost:8000/api/rules \
 
 **Neuer Aktor:** Handler in `backend/actuators/controller.py` ergänzen, in `ActionType` in `backend/rules/models.py` registrieren.
 
----
-
-## Lizenz
-
-MIT
 
 ---
 
