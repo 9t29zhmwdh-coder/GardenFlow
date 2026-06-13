@@ -144,10 +144,6 @@ curl -X POST http://localhost:8000/api/rules \
 
 ---
 
-## License
-
-MIT
-
 ---
 
 **Author:** [Rafael Yilmaz](https://github.com/9t29zhmwdh-coder) · **Status:** Framework Preview · **Last Updated:** June 2026
