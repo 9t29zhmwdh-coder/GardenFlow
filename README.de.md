@@ -154,7 +154,3 @@ MIT
 
 **Autor:** [Rafael Yilmaz](https://github.com/9t29zhmwdh-coder) · **Status:** Framework Preview · **Zuletzt aktualisiert:** Juni 2026
 
-<div align="right">
-  <sub>by</sub><br/>
-  <img src="RayStudio.png" alt="RayStudio" width="70"/>
-</div>
