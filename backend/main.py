@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -22,10 +23,24 @@ logging.basicConfig(
 )
 logger = logging.getLogger("gardenflow")
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await init_db()
+    mqtt_client.set_broadcast(registry.broadcast)
+    mqtt_client.set_rule_engine(evaluate)
+    set_action_executor(execute_action)
+    asyncio.create_task(mqtt_client.mqtt_loop())
+    logger.info("GardenFlow started")
+    yield
+    logger.info("GardenFlow stopped")
+
+
 app = FastAPI(
     title="GardenFlow",
     description="Modular Home Garden Automation Toolkit",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -55,18 +70,3 @@ async def websocket_endpoint(ws: WebSocket):
             await ws.receive_text()
     except WebSocketDisconnect:
         registry.disconnect(ws)
-
-
-@app.on_event("startup")
-async def startup():
-    await init_db()
-    mqtt_client.set_broadcast(registry.broadcast)
-    mqtt_client.set_rule_engine(evaluate)
-    set_action_executor(execute_action)
-    asyncio.create_task(mqtt_client.mqtt_loop())
-    logger.info("GardenFlow started")
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    logger.info("GardenFlow stopped")
