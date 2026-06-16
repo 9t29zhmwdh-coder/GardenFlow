@@ -6,9 +6,9 @@
 
 [Deutsch](README.de.md)
 
-![Python](https://img.shields.io/badge/Python-3.12-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.111-green)
-![MQTT](https://img.shields.io/badge/MQTT-Mosquitto-orange)
+![Python](https://img.shields.io/badge/Python-3.12-orange)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.111-blue)
+![MQTT](https://img.shields.io/badge/MQTT-Mosquitto-blue)
 ![Docker](https://img.shields.io/badge/Docker-compose-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
