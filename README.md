@@ -6,6 +6,7 @@
 
 [Deutsch](README.de.md)
 
+[![CI](https://github.com/9t29zhmwdh-coder/GardenFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/GardenFlow/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.12-orange)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.111-blue)
 ![MQTT](https://img.shields.io/badge/MQTT-Mosquitto-blue)
