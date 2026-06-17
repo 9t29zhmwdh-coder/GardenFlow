@@ -13,7 +13,7 @@
 ![Docker](https://img.shields.io/badge/Docker-compose-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-A modular Home Garden Automation Toolkit — connect sensors (ESP32, Zigbee, MQTT), define automation rules, and visualise everything in a real-time web dashboard.
+A modular Home Garden Automation Toolkit; connect sensors (ESP32, Zigbee, MQTT), define automation rules, and visualise everything in a real-time web dashboard.
 
 Runs on **Linux, Windows, and macOS** via Docker.
 
@@ -21,13 +21,13 @@ Runs on **Linux, Windows, and macOS** via Docker.
 
 ## Features
 
-- **MQTT Integration** — connects to any MQTT broker; auto-discovers sensor topics under `garden/sensors/{zone}/{type}`
-- **Logic Engine** — rule-based automation with AND/OR conditions, configurable cooldown, actions: activate pump, send alert
-- **Real-time Dashboard** — Chart.js live charts, manual pump control, rule management — no build step, no framework
-- **REST API** — clean endpoints, auto-generated Swagger UI at `/docs`
-- **WebSocket stream** — push sensor events to all connected clients
-- **Cross-platform** — `pathlib.Path` throughout, no shell-specific code, `tools/test_sensor.py` as a CLI-independent simulator
-- **Extensible** — add new sensor types via `SensorType` enum, new actuators via `ActuatorType` + handler
+- **MQTT Integration**: connects to any MQTT broker; auto-discovers sensor topics under `garden/sensors/{zone}/{type}`
+- **Logic Engine**: rule-based automation with AND/OR conditions, configurable cooldown, actions: activate pump, send alert
+- **Real-time Dashboard**: Chart.js live charts, manual pump control, rule management; no build step, no framework
+- **REST API**: clean endpoints, auto-generated Swagger UI at `/docs`
+- **WebSocket stream**: push sensor events to all connected clients
+- **Cross-platform**: `pathlib.Path` throughout, no shell-specific code, `tools/test_sensor.py` as a CLI-independent simulator
+- **Extensible**: add new sensor types via `SensorType` enum, new actuators via `ActuatorType` + handler
 
 ---
 
@@ -46,7 +46,7 @@ cp .env.example .env
 docker compose up -d
 ```
 
-Open **http://localhost:8000** — dashboard loads immediately.
+Open **http://localhost:8000** and the dashboard loads immediately.
 
 Simulate sensor data (cross-platform):
 
