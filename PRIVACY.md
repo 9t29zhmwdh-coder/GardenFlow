@@ -1,4 +1,4 @@
-# Privacy Policy — GardenFlow
+# Privacy Policy : GardenFlow
 
 GardenFlow runs **fully locally** in your home network.
 
