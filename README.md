@@ -6,12 +6,7 @@
 
 [🇩🇪 Deutsche Version](README.de.md)
 
-[![CI](https://github.com/9t29zhmwdh-coder/GardenFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/GardenFlow/actions/workflows/ci.yml)
-![Python](https://img.shields.io/badge/Python-3.12-orange)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.111-blue)
-![MQTT](https://img.shields.io/badge/MQTT-Mosquitto-blue)
-![Docker](https://img.shields.io/badge/Docker-compose-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+[![CI](https://github.com/9t29zhmwdh-coder/GardenFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/GardenFlow/actions) ![Platform](https://img.shields.io/badge/Platform-Linux_%7C_macOS-lightgrey) ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![AI | Claude Code](https://img.shields.io/badge/AI-Claude_Code-black?logo=anthropic&logoColor=white) ![AI | Copilot](https://img.shields.io/badge/AI-Copilot-black?logo=github&logoColor=white)
 
 A modular Home Garden Automation Toolkit; connect sensors (ESP32, Zigbee, MQTT), define automation rules, and visualise everything in a real-time web dashboard.
 
@@ -147,4 +142,4 @@ curl -X POST http://localhost:8000/api/rules \
 
 ---
 
-**Author:** [Rafael Yilmaz](https://github.com/9t29zhmwdh-coder) · **Status:** Framework Preview · **Last Updated:** June 2026
+**Author:** [Rafael Yilmaz](https://github.com/9t29zhmwdh-coder) · **Status:** Active · v0.1.0 · **License:** MIT
