@@ -9,7 +9,6 @@
 # GardenFlow
 
 [![CI](https://github.com/9t29zhmwdh-coder/GardenFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/GardenFlow/actions) ![Platform](https://img.shields.io/badge/Platform-Linux_%7C_macOS-lightgrey) ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![AI | Claude Code](https://img.shields.io/badge/AI-Claude_Code-black?logo=anthropic&logoColor=white) ![AI | Copilot](https://img.shields.io/badge/AI-Copilot-black?logo=github&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-green)
 
 Ein modulares Home-Garden-Automation-Toolkit; Sensoren (ESP32, Zigbee, MQTT) anschliessen, Automatisierungsregeln definieren und alles in einem Echtzeit-Web-Dashboard visualisieren.
 
