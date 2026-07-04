@@ -71,15 +71,15 @@ MQTT Broker (Mosquitto)
     │
     ▼  aiomqtt subscriber
 Backend (FastAPI / Python 3.12)
-    ├── MQTT client        — subscribe garden/# → parse → persist + broadcast
-    ├── Sensor repository  — SQLite (WAL) in-memory cache + history
-    ├── Logic engine       — evaluate rules on every reading
-    ├── Actuator controller — publish MQTT commands (pump on/off)
-    └── WebSocket registry  — broadcast events to all dashboard clients
+    ├── MQTT client        # subscribe garden/# → parse → persist + broadcast
+    ├── Sensor repository  # SQLite (WAL) in-memory cache + history
+    ├── Logic engine       # evaluate rules on every reading
+    ├── Actuator controller # publish MQTT commands (pump on/off)
+    └── WebSocket registry  # broadcast events to all dashboard clients
     │
     ▼  StaticFiles mount
 Frontend (Vanilla JS + Alpine.js + Chart.js)
-    — served directly from FastAPI, no build step
+    # served directly from FastAPI, no build step
 ```
 
 ---

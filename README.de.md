@@ -73,15 +73,15 @@ MQTT-Broker (Mosquitto)
     │
     ▼  aiomqtt-Subscriber
 Backend (FastAPI / Python 3.12)
-    ├── MQTT-Client        — garden/# abonnieren → parsen → speichern + broadcast
-    ├── Sensor-Repository  — SQLite (WAL) In-Memory-Cache + Verlauf
-    ├── Logik-Engine       — Regeln bei jedem Sensor-Wert auswerten
-    ├── Aktor-Controller   — MQTT-Befehle publizieren (Pumpe ein/aus)
-    └── WebSocket-Registry — Events an alle Dashboard-Clients
+    ├── MQTT-Client        # garden/# abonnieren → parsen → speichern + broadcast
+    ├── Sensor-Repository  # SQLite (WAL) In-Memory-Cache + Verlauf
+    ├── Logik-Engine       # Regeln bei jedem Sensor-Wert auswerten
+    ├── Aktor-Controller   # MQTT-Befehle publizieren (Pumpe ein/aus)
+    └── WebSocket-Registry # Events an alle Dashboard-Clients
     │
     ▼  StaticFiles-Mount
 Frontend (Vanilla JS + Alpine.js + Chart.js)
-    — direkt von FastAPI serviert, kein Build-Schritt
+    # direkt von FastAPI serviert, kein Build-Schritt
 ```
 
 ---
