@@ -2,6 +2,31 @@ const API  = window.location.origin;
 const WS   = (window.location.protocol === "https:" ? "wss://" : "ws://") + window.location.host + "/ws";
 const MAX_POINTS = 60;
 
+const TRANSLATIONS = {
+  en: {
+    live: "Live", disconnected: "Disconnected",
+    zones: "ZONES", sensors: "SENSORS", rules: "RULES", refresh: "Refresh",
+    waitingSensors: "Waiting for sensor data. Start",
+    waitingSensorsSuffix: "to simulate data.",
+    manualPump: "Manual pump:", stop: "Stop",
+    automationRules: "Automation Rules",
+    noRules: "No rules yet. Create one via",
+    confirmDeleteRule: "Delete rule?",
+    sensorTypes: { moisture: "Moisture", temperature: "Temperature", humidity: "Humidity", light: "Light" },
+  },
+  de: {
+    live: "Live", disconnected: "Getrennt",
+    zones: "ZONEN", sensors: "SENSOREN", rules: "REGELN", refresh: "Aktualisieren",
+    waitingSensors: "Warte auf Sensordaten. Starte",
+    waitingSensorsSuffix: "um Daten zu simulieren.",
+    manualPump: "Pumpe manuell:", stop: "Stop",
+    automationRules: "Automatisierungsregeln",
+    noRules: "Keine Regeln vorhanden. Erstelle eine via",
+    confirmDeleteRule: "Regel löschen?",
+    sensorTypes: { moisture: "Feuchte", temperature: "Temperatur", humidity: "Luftf.", light: "Licht" },
+  },
+};
+
 document.addEventListener("alpine:init", () => {
   Alpine.data("gardenflow", () => ({
     connected: false,
@@ -10,6 +35,16 @@ document.addEventListener("alpine:init", () => {
     rules: [],
     zones: [],
     charts: {},    // { "zone1.moisture": Chart }
+    lang: localStorage.getItem("gardenflow_lang") || "en",
+
+    // ---- i18n ----
+    t(key) {
+      return TRANSLATIONS[this.lang][key] ?? key;
+    },
+    toggleLang() {
+      this.lang = this.lang === "en" ? "de" : "en";
+      localStorage.setItem("gardenflow_lang", this.lang);
+    },
 
     // ---- Lifecycle ----
     async init() {
@@ -79,7 +114,7 @@ document.addEventListener("alpine:init", () => {
     },
 
     label(type) {
-      return { moisture: "Feuchte", temperature: "Temperatur", humidity: "Luftf.", light: "Licht" }[type] ?? type;
+      return TRANSLATIONS[this.lang].sensorTypes[type] ?? type;
     },
 
     // ---- Manual pump ----
@@ -112,7 +147,7 @@ document.addEventListener("alpine:init", () => {
       });
     },
     async deleteRule(id) {
-      if (!confirm("Regel löschen?")) return;
+      if (!confirm(this.t("confirmDeleteRule"))) return;
       await fetch(`${API}/api/rules/${id}`, { method: "DELETE" });
       await this.loadRules();
     },
