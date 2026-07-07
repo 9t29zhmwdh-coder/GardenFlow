@@ -9,7 +9,7 @@ from rules.models import Rule, RuleCreate
 
 async def list_rules() -> list[Rule]:
     rules: list[Rule] = []
-    async with await get_db() as db:
+    async with get_db() as db:
         cursor = await db.execute(
             "SELECT id, name, enabled, conditions_json, condition_logic, "
             "action_json, cooldown_secs, last_triggered FROM rules"
@@ -20,7 +20,7 @@ async def list_rules() -> list[Rule]:
 
 
 async def get_rule(rule_id: str) -> Rule | None:
-    async with await get_db() as db:
+    async with get_db() as db:
         cursor = await db.execute(
             "SELECT id, name, enabled, conditions_json, condition_logic, "
             "action_json, cooldown_secs, last_triggered FROM rules WHERE id = ?",
@@ -32,7 +32,7 @@ async def get_rule(rule_id: str) -> Rule | None:
 
 async def create_rule(data: RuleCreate) -> Rule:
     rule = Rule(**data.model_dump())
-    async with await get_db() as db:
+    async with get_db() as db:
         await db.execute(
             """
             INSERT INTO rules (id, name, enabled, conditions_json, condition_logic,
@@ -54,7 +54,7 @@ async def update_rule(rule_id: str, data: RuleCreate) -> Rule | None:
     if not existing:
         return None
     updated = Rule(id=rule_id, **data.model_dump(), last_triggered=existing.last_triggered)
-    async with await get_db() as db:
+    async with get_db() as db:
         await db.execute(
             """
             UPDATE rules SET name=?, enabled=?, conditions_json=?, condition_logic=?,
@@ -72,14 +72,14 @@ async def update_rule(rule_id: str, data: RuleCreate) -> Rule | None:
 
 
 async def delete_rule(rule_id: str) -> bool:
-    async with await get_db() as db:
+    async with get_db() as db:
         cursor = await db.execute("DELETE FROM rules WHERE id=?", (rule_id,))
         await db.commit()
         return cursor.rowcount > 0
 
 
 async def update_last_triggered(rule_id: str) -> None:
-    async with await get_db() as db:
+    async with get_db() as db:
         await db.execute(
             "UPDATE rules SET last_triggered=? WHERE id=?",
             (datetime.now(timezone.utc).isoformat(), rule_id),

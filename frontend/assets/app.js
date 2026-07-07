@@ -14,8 +14,17 @@ document.addEventListener("alpine:init", () => {
     // ---- Lifecycle ----
     async init() {
       await this.loadRules();
+      await this.loadSensors();
       this.connectWS();
       setInterval(() => this.connectWS(), 5000);
+    },
+
+    async loadSensors() {
+      const res = await fetch(`${API}/api/sensors`);
+      const data = await res.json();
+      data.forEach(s => this.handleSensor({
+        zone: s.zone, sensor_type: s.sensor_type, value: s.value, unit: s.unit, timestamp: s.timestamp,
+      }));
     },
 
     connectWS() {

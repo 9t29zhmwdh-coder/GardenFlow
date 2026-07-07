@@ -51,7 +51,7 @@ async def _auto_off(zone: str, delay: int, source: str) -> None:
 
 
 async def _log(zone: str, actuator_type: str, action: str, source: str) -> None:
-    async with await get_db() as db:
+    async with get_db() as db:
         await db.execute(
             "INSERT INTO actuator_log (zone, type, action, source, timestamp) VALUES (?, ?, ?, ?, ?)",
             (zone, actuator_type, action, source, datetime.now(timezone.utc).isoformat()),
