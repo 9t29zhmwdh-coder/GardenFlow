@@ -35,10 +35,9 @@ async def mqtt_loop() -> None:
             async with aiomqtt.Client(settings.mqtt_host, settings.mqtt_port) as client:
                 logger.info("MQTT connected to %s:%d", settings.mqtt_host, settings.mqtt_port)
                 reconnect_delay = 5
-                async with client.messages() as messages:
-                    await client.subscribe(WILDCARD_ALL)
-                    async for message in messages:
-                        await _handle_message(str(message.topic), message.payload)
+                await client.subscribe(WILDCARD_ALL)
+                async for message in client.messages:
+                    await _handle_message(str(message.topic), message.payload)
         except aiomqtt.MqttError as exc:
             logger.warning("MQTT disconnected (%s) — reconnecting in %ds", exc, reconnect_delay)
             await asyncio.sleep(reconnect_delay)

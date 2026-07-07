@@ -1,14 +1,20 @@
+from contextlib import asynccontextmanager
+
 import aiosqlite
 from pathlib import Path
 from config import settings
 
 
-async def get_db() -> aiosqlite.Connection:
+@asynccontextmanager
+async def get_db():
     db = await aiosqlite.connect(settings.db_path)
     db.row_factory = aiosqlite.Row
-    await db.execute("PRAGMA journal_mode=WAL")
-    await db.execute("PRAGMA foreign_keys=ON")
-    return db
+    try:
+        await db.execute("PRAGMA journal_mode=WAL")
+        await db.execute("PRAGMA foreign_keys=ON")
+        yield db
+    finally:
+        await db.close()
 
 
 async def init_db() -> None:

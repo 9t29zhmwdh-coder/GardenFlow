@@ -12,7 +12,7 @@ _latest: dict[tuple[str, str], SensorReading] = {}
 
 async def upsert_reading(reading: SensorReading) -> None:
     _latest[(reading.zone, reading.sensor_type.value)] = reading
-    async with await get_db() as db:
+    async with get_db() as db:
         await db.execute(
             """
             INSERT INTO sensor_readings (zone, type, value, unit, timestamp)
@@ -38,7 +38,7 @@ async def get_history(
     hours: int = 24,
 ) -> list[SensorReading]:
     rows: list[SensorReading] = []
-    async with await get_db() as db:
+    async with get_db() as db:
         cursor = await db.execute(
             """
             SELECT id, zone, type, value, unit, timestamp
