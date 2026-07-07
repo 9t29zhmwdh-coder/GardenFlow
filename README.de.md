@@ -14,13 +14,13 @@ Ein modulares Home-Garden-Automation-Toolkit; Sensoren (ESP32, Zigbee, MQTT) ans
 
 Läuft auf **Linux, Windows und macOS** via Docker.
 
-> **So läuft das:** GardenFlow ist kein installierbares Programm — es gibt keine `.exe`, `.dmg` oder `.deb`. Es ist ein kleiner Server, den du lokal per Docker startest und danach im Browser unter `http://localhost:8000` bedienst. Kein Installer, kein Tray-Icon, kein Autostart — du startest und stoppst ihn bewusst mit `docker compose up` / `docker compose down`.
+> **So läuft das:** GardenFlow ist kein installierbares Programm: es gibt keine `.exe`, `.dmg` oder `.deb`. Es ist ein kleiner Server, den du lokal per Docker startest und danach im Browser unter `http://localhost:8000` bedienst. Es gibt keinen Installer, kein Tray-Icon und keinen Autostart. Du startest und stoppst ihn bewusst mit `docker compose up` / `docker compose down`.
 
 ![GardenFlow Dashboard](docs/screenshot.png)
 
 ---
 
-**In der Praxis:** Du bekommst ein live-grafisches Dashboard im Browser, das jeden Sensorwert in Echtzeit zeigt, plus einen Regel-Editor für automatisches Bewässern — keine Programmierung nach dem Setup nötig.
+**In der Praxis:** Du bekommst ein live-grafisches Dashboard im Browser, das jeden Sensorwert in Echtzeit zeigt, plus einen Regel-Editor für automatisches Bewässern, ganz ohne Programmierung nach dem Setup.
 
 ## Features
 
