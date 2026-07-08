@@ -22,4 +22,4 @@ jobs:
       - name: Import check
         run: |
           cd backend
-          python -c "import main" 2>/dev/null || true
+          python -c "import main"

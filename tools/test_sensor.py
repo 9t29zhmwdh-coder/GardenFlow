@@ -1,5 +1,5 @@
 """
-Sensor-Simulator — plattformunabhängig (Linux, Windows, macOS).
+Sensor-Simulator, plattformunabhängig (Linux, Windows, macOS).
 Sendet zufällige Sensor-Werte via MQTT an den lokalen Broker.
 
 Verwendung:
@@ -30,7 +30,7 @@ async def simulate(host: str, port: int, zone: str, count: int, interval: float)
 
     print(f"Verbinde mit MQTT {host}:{port} …")
     async with aiomqtt.Client(host, port) as client:
-        print(f"Sende {count} Lesungen für Zone '{zone}' (Interval {interval}s) — Ctrl+C zum Beenden\n")
+        print(f"Sende {count} Lesungen für Zone '{zone}' (Interval {interval}s), Ctrl+C zum Beenden\n")
         for i in range(count):
             for sensor_type, (lo, hi), unit in sensors:
                 value = round(random.uniform(lo, hi), 2)

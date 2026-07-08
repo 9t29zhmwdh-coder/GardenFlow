@@ -5,6 +5,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.6] (2026-07-08)
+
+### Fixed
+- The WebSocket endpoint (`/ws`) returned HTTP 500 on every connection attempt: `app.mount("/", StaticFiles(...))` was registered before `@app.websocket("/ws")`, so the root-mounted static files catch-all intercepted the handshake before the dedicated route could match (`StaticFiles` only handles the ASGI `http` scope, not `websocket`, so it hit an `assert scope["type"] == "http"` and crashed). The dashboard always showed "Disconnected" and never received a single live push update; verified live with the fix, the badge now shows "Live" and charts update in real time
+- Chart.js instances were stored in `charts: {}` inside Alpine.js's reactive `x-data`, so every sensor update triggered Alpine to deep-proxy-wrap a Chart.js object graph full of circular internal references, throwing `RangeError: Maximum call stack size exceeded` in the browser console on nearly every page interaction, including the language toggle appearing to silently do nothing. Moved the charts map outside Alpine's reactive state entirely
+- CI's import check (`python -c "import main" 2>/dev/null || true`) could never fail regardless of the actual import result; removed the silencing so a broken import actually fails the build
+- Corrected `ARCHITECTURE.md`'s file tree, MQTT topic convention, and mosquitto config path to match the real `backend/` package layout (it previously described flat files like `mqtt_client.py`/`rule_engine.py`/`db.py` and a bundled ESP32 firmware directory, none of which exist)
+- Corrected `CONTRIBUTING.md`, which referenced a nonexistent `pyproject.toml`/`pip install -e ".[dev]"` and a `pytest` suite that doesn't exist
+- Fixed em-dashes across documentation, `tools/test_sensor.py`, `backend/mqtt/client.py`, and `frontend/index.html`
+- Removed stale `SKELETON.md`/`TEMPLATE_NOTES.md` scaffolding bookkeeping
+- Fixed the FastAPI app's reported `version` claiming `1.0.0` while the repository's actual tags were at `v0.1.5`
+
 ## [0.1.1] (2026-07-07)
 
 ### Fixed

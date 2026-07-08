@@ -39,7 +39,7 @@ async def mqtt_loop() -> None:
                 async for message in client.messages:
                     await _handle_message(str(message.topic), message.payload)
         except aiomqtt.MqttError as exc:
-            logger.warning("MQTT disconnected (%s) — reconnecting in %ds", exc, reconnect_delay)
+            logger.warning("MQTT disconnected (%s), reconnecting in %ds", exc, reconnect_delay)
             await asyncio.sleep(reconnect_delay)
             reconnect_delay = min(reconnect_delay * 2, 60)
         except Exception:
@@ -51,7 +51,7 @@ async def _handle_message(topic: str, payload: bytes) -> None:
     try:
         data = json.loads(payload.decode())
     except (json.JSONDecodeError, UnicodeDecodeError):
-        logger.debug("Non-JSON payload on %s — ignored", topic)
+        logger.debug("Non-JSON payload on %s, ignored", topic)
         return
 
     parsed = parse_sensor_topic(topic)
@@ -62,7 +62,7 @@ async def _handle_message(topic: str, payload: bytes) -> None:
     try:
         sensor_type = SensorType(sensor_type_str)
     except ValueError:
-        logger.debug("Unknown sensor type '%s' — ignored", sensor_type_str)
+        logger.debug("Unknown sensor type '%s', ignored", sensor_type_str)
         return
 
     reading = SensorReading(
