@@ -27,6 +27,14 @@ const TRANSLATIONS = {
   },
 };
 
+// Chart.js instances live outside Alpine's reactive state on purpose: Alpine
+// wraps x-data in a Proxy for reactivity, and Chart.js instances contain
+// circular internal references (canvas/scale/plugin cross-links) that blow
+// the stack when Alpine tries to deeply proxy-wrap them ("Maximum call stack
+// size exceeded"), breaking every re-render on the page, including things
+// unrelated to charts like the language toggle.
+const charts = {};    // { "zone1.moisture": Chart }
+
 document.addEventListener("alpine:init", () => {
   Alpine.data("gardenflow", () => ({
     connected: false,
@@ -34,7 +42,6 @@ document.addEventListener("alpine:init", () => {
     sensors: {},   // { "zone1.moisture": { value, unit, zone, ts } }
     rules: [],
     zones: [],
-    charts: {},    // { "zone1.moisture": Chart }
     lang: localStorage.getItem("gardenflow_lang") || "en",
 
     // ---- i18n ----
@@ -90,8 +97,8 @@ document.addEventListener("alpine:init", () => {
     pushChart(key, value) {
       const canvas = document.getElementById("chart-" + key);
       if (!canvas) return;
-      if (!this.charts[key]) {
-        this.charts[key] = new Chart(canvas, {
+      if (!charts[key]) {
+        charts[key] = new Chart(canvas, {
           type: "line",
           data: { labels: [], datasets: [{ data: [], borderColor: "#52b788", backgroundColor: "rgba(82,183,136,.12)", fill: true, tension: 0.35, pointRadius: 0 }] },
           options: {
@@ -102,7 +109,7 @@ document.addEventListener("alpine:init", () => {
           },
         });
       }
-      const chart = this.charts[key];
+      const chart = charts[key];
       const now = new Date().toLocaleTimeString();
       chart.data.labels.push(now);
       chart.data.datasets[0].data.push(value);
