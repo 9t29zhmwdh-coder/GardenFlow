@@ -18,6 +18,10 @@ Runs on **Linux, Windows, and macOS** via Docker.
 
 ---
 
+> 🌱 New here? → [Step-by-step guide for beginners](GETTING_STARTED.md)
+
+---
+
 **In practice:** you get a live graphical dashboard in your browser showing every sensor reading in real time, plus a rules editor to automate watering, with no coding required after setup.
 
 ## Features
