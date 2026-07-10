@@ -40,8 +40,6 @@ Runs on **Linux, Windows, and macOS** via Docker.
 
 - [Docker](https://www.docker.com/) + Docker Compose **or** Python 3.12+ (local dev)
 
-> 🌱 New here? → [Step-by-step guide for beginners](GETTING_STARTED.md)
-
 ---
 
 ## Quick Start (Docker)
