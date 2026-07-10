@@ -20,6 +20,10 @@ Läuft auf **Linux, Windows und macOS** via Docker.
 
 ---
 
+> 🌱 Neu hier? → [Schritt-für-Schritt-Anleitung für Einsteiger](GETTING_STARTED.md)
+
+---
+
 **In der Praxis:** Du bekommst ein live-grafisches Dashboard im Browser, das jeden Sensorwert in Echtzeit zeigt, plus einen Regel-Editor für automatisches Bewässern, ganz ohne Programmierung nach dem Setup.
 
 ## Features
