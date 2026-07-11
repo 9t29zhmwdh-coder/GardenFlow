@@ -5,6 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.9] (2026-07-11)
+
+### Added
+
+- Documented Dual-Licensing assessment (Community-only) in ROADMAP.md.
+
 ## [0.1.8] (2026-07-11)
 
 ### Fixed
