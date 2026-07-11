@@ -23,3 +23,7 @@
 - [ ] Full test coverage
 - [ ] Helm chart for Kubernetes deployment
 - [ ] Plugin system for custom sensor adapters
+
+## Dual-Licensing Readiness
+
+Assessed 2026-07-11: Community-only, not a Dual-Licensing candidate. GardenFlow is a consumer/hobbyist home-garden automation toolkit with no enterprise audience and no team or multi-tenant dimension anywhere on the roadmap. This category (maker-focused home automation, in the same space as Home Assistant) conventionally stays fully open source rather than dual-licensed. Revisit only if a genuine commercial-greenhouse or multi-site use case emerges.
