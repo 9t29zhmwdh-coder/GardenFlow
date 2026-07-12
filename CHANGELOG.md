@@ -5,6 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [0.1.10] (2026-07-12)
+
+### Fixed
+
+- Removed em-dashes/en-dashes from GETTING_STARTED.md (Swiss German orthography rule).
+
 ## [0.1.9] (2026-07-11)
 
 ### Added

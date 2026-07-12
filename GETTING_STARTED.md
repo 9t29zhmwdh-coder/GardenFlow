@@ -31,7 +31,7 @@ Press Enter after each line.
 **Install Docker Desktop:**
 
 1. Download it from [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/).
-2. Run the installer and accept the defaults. It will ask to enable **WSL2** — accept this, Docker Desktop needs it on Windows.
+2. Run the installer and accept the defaults. It will ask to enable **WSL2**: accept this, Docker Desktop needs it on Windows.
 3. Restart your computer if prompted.
 4. Start **Docker Desktop** from the Start menu and wait until it says "Docker Desktop is running" (whale icon in the system tray, bottom right).
 5. Go back to your terminal and re-run the two commands above.
@@ -68,7 +68,7 @@ GardenFlow reads its settings from a file called `.env`. A template is included:
 copy .env.example .env
 ```
 
-The defaults work out of the box for trying GardenFlow locally — no editing required for a first run.
+The defaults work out of the box for trying GardenFlow locally; no editing required for a first run.
 
 ### 6. Start GardenFlow
 
@@ -86,7 +86,7 @@ Open your browser and go to:
 http://localhost:8000
 ```
 
-You should see the GardenFlow dashboard. Since no real sensors are connected yet, charts will be empty — see "What you should see" below for how to simulate sensor data.
+You should see the GardenFlow dashboard. Since no real sensors are connected yet, charts will be empty; see "What you should see" below for how to simulate sensor data.
 
 ---
 
@@ -218,7 +218,7 @@ docker compose down
 
 ## A note for advanced users
 
-If you already have Python 3.12+ installed and prefer to run GardenFlow without Docker for local development, see the "Local Development (no Docker)" section in the main [README.md](README.md). This is not recommended for a first try — Docker is the simpler path.
+If you already have Python 3.12+ installed and prefer to run GardenFlow without Docker for local development, see the "Local Development (no Docker)" section in the main [README.md](README.md). This is not recommended for a first try; Docker is the simpler path.
 
 ---
 
