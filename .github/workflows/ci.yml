@@ -26,3 +26,28 @@ jobs:
         run: |
           cd backend
           python -c "import main"
+
+  docker-smoke-test:
+    name: Docker Compose Smoke Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Prepare environment
+        run: cp .env.example .env
+      - name: Build and start stack
+        run: docker compose up -d --build
+      - name: Wait for backend to become reachable
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8000/docs > /dev/null; then
+              echo "Backend is up"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Backend never came up"
+          docker compose logs
+          exit 1
+      - name: Tear down
+        if: always()
+        run: docker compose down

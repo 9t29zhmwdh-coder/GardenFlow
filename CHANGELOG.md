@@ -5,6 +5,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.0] - 2026-07-17
+
+First stable release: CI now actually builds and boots the full
+`docker compose up` stack described in the README and verifies the
+backend responds, turning "should work" into a tested guarantee. That
+real, tested, installable distribution is the prerequisite for a 1.0
+release per this portfolio's own SemVer discipline.
+
+### Added
+- CI job (`docker-smoke-test`) that runs `docker compose up --build` and confirms the backend responds, verifying the documented Quick Start actually works end to end.
+
 ## [0.1.11] - 2026-07-17
 
 ### Changed
