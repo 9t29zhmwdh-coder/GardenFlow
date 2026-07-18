@@ -4,7 +4,7 @@
   <h1>GardenFlow</h1>
 </div>
 
-[🇬🇧 English](README.md)
+[🇬🇧 English Version](README.md)
 
 # GardenFlow
 
