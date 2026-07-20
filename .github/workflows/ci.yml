@@ -26,6 +26,10 @@ jobs:
         run: |
           cd backend
           python -c "import main"
+      - name: Run pytest suite
+        run: |
+          cd backend
+          python -m pytest -v --cov=. --cov-report=term-missing:skip-covered
 
   docker-smoke-test:
     name: Docker Compose Smoke Test
