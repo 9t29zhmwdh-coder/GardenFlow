@@ -11,3 +11,4 @@ mosquitto/log/
 venv/
 node_modules/
 dist/
+.coverage
