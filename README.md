@@ -6,8 +6,8 @@
 
 [🇩🇪 Deutsche Version](README.de.md)
 
-[![CI](https://github.com/9t29zhmwdh-coder/GardenFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/GardenFlow/actions) ![Platform](https://img.shields.io/badge/Platform-Linux_%7C_macOS-lightgrey) ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![AI | Claude Code](https://img.shields.io/badge/AI-Claude_Code-black?logo=anthropic&logoColor=white) ![AI | Copilot](https://img.shields.io/badge/AI-Copilot-black?logo=github&logoColor=white)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/9t29zhmwdh-coder/GardenFlow/badge)](https://securityscorecards.dev/viewer/?uri=github.com/9t29zhmwdh-coder/GardenFlow)
+[![CI](https://github.com/9t29zhmwdh-coder/GardenFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/GardenFlow/actions) [![CodeQL](https://github.com/9t29zhmwdh-coder/GardenFlow/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/9t29zhmwdh-coder/GardenFlow/security/code-scanning) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/9t29zhmwdh-coder/GardenFlow/badge)](https://securityscorecards.dev/viewer/?uri=github.com/9t29zhmwdh-coder/GardenFlow)
+![Platform](https://img.shields.io/badge/Platform-Linux_%7C_macOS-lightgrey) ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![AI | Claude Code](https://img.shields.io/badge/AI-Claude_Code-black?logo=anthropic&logoColor=white) ![AI | Copilot](https://img.shields.io/badge/AI-Copilot-black?logo=github&logoColor=white)
 
 A modular Home Garden Automation Toolkit; connect sensors (ESP32, Zigbee, MQTT), define automation rules, and visualise everything in a real-time web dashboard.
 
