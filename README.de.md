@@ -14,9 +14,27 @@
 
 # GardenFlow
 
-Ein modulares Home-Garden-Automation-Toolkit; Sensoren (ESP32, Zigbee, MQTT) anschliessen, Automatisierungsregeln definieren und alles in einem Echtzeit-Web-Dashboard visualisieren.
+**Giesst den Garten nach dem, was der Boden sagt, nicht nach der Uhr.**
 
-Läuft auf **Linux, Windows und macOS** via Docker.
+Eine Zeitschaltuhr giesst durch die Regenwoche und lässt die heisse aus.
+Abhilfe schafft ein Feuchtigkeitssensor und eine Regel, die ihn liest, was nach
+einem Nachmittag klingt und dann ein Wochenende wird: MQTT-Topics, eine
+Datenbank und irgendein Weg zu sehen, was passiert ist, während du weg warst.
+
+GardenFlow ist genau diese Infrastruktur. Sensoren anschliessen, Regel im
+Browser schreiben, Messwerte live mitlesen:
+
+```
+wenn Bodenfeuchte < 30% und letzte Bewässerung > 6h:
+    Ventil 5 Minuten öffnen
+```
+
+Spricht ESP32, Zigbee und MQTT. Läuft auf Linux, Windows und macOS per Docker,
+unter `http://localhost:8000`.
+
+**Nichts für dich, wenn** du ohnehin Home Assistant betreibst. Das kann das per
+Add-on, und ein zweiter Automatisierungs-Stack nur für den Garten ist den
+Pflegeaufwand nicht wert.
 
 > **So läuft das:** GardenFlow ist kein installierbares Programm: es gibt keine `.exe`, `.dmg` oder `.deb`. Es ist ein kleiner Server, den du lokal per Docker startest und danach im Browser unter `http://localhost:8000` bedienst. Es gibt keinen Installer, kein Tray-Icon und keinen Autostart. Du startest und stoppst ihn bewusst mit `docker compose up` / `docker compose down`.
 
