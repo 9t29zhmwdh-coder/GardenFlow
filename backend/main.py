@@ -39,7 +39,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="GardenFlow",
     description="Modular Home Garden Automation Toolkit",
-    version="1.0.7",
+    version="1.0.8",
     lifespan=lifespan,
 )
 
