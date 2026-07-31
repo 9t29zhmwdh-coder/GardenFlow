@@ -5,6 +5,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.7] - 2026-07-31
+
+### Changed
+
+- Both READMEs now open with the reason to automate watering at all, which is that a timer waters through the rainy week and skips the hot one, rather than listing the toolkit's parts. A rule in plain text shows what configuring it looks like, and a short paragraph says that anyone already running Home Assistant should use its add-on instead of maintaining a second automation stack.
+
+### Fixed
+
+- The API reported `version="0.1.10"` in its OpenAPI info block, a number that matched no release and had not moved since well before 1.0.0. It now tracks the release version.
+
+---
+
 ## [1.0.6] - 2026-07-29
 
 ### Security

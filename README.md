@@ -12,9 +12,27 @@
 
 ![Platform](https://img.shields.io/badge/Platform-Linux_%7C_macOS-lightgrey) ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![AI | Claude Code](https://img.shields.io/badge/AI-Claude_Code-black?logo=anthropic&logoColor=white) ![AI | Copilot](https://img.shields.io/badge/AI-Copilot-black?logo=github&logoColor=white)
 
-A modular Home Garden Automation Toolkit; connect sensors (ESP32, Zigbee, MQTT), define automation rules, and visualise everything in a real-time web dashboard.
+**Waters the garden based on what the soil actually says, not on a timer.**
 
-Runs on **Linux, Windows, and macOS** via Docker.
+A timer waters through a rainy week and skips the hot one. The fix is a
+moisture sensor and a rule that reads it, which sounds like an afternoon and
+turns into a weekend of MQTT topics, a database and a way to see what happened
+while you were out.
+
+GardenFlow is that plumbing. Point it at your sensors, write the rule in the
+browser, and watch the readings live:
+
+```
+if soil_moisture < 30% and last_watered > 6h:
+    open valve for 5 min
+```
+
+Speaks ESP32, Zigbee and MQTT. Runs on Linux, Windows and macOS through
+Docker, at `http://localhost:8000`.
+
+**Not for you if** you already run Home Assistant. It does this with an
+add-on, and a second automation stack for the garden alone is not worth the
+maintenance.
 
 > **How it runs:** GardenFlow is not an installable program: there is no `.exe`, `.dmg`, or `.deb`. It is a small server you start locally with Docker and then use in your browser at `http://localhost:8000`. There is no installer, no system tray icon, and no auto-start. You start and stop it explicitly with `docker compose up` / `docker compose down`.
 
