@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.0.9] - 2026-08-04
+
+### Changed
+
+- `pydantic-settings` minimum raised from 2.3.0 to 2.14.2. It is a lower bound in the requirements, so the installed version was already newer; what changes is that an old one can no longer be resolved.
+
+---
+
 ## [1.0.8] - 2026-07-31
 
 ### Fixed
