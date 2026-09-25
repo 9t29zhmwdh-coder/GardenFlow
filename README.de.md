@@ -55,8 +55,8 @@ Pflegeaufwand nicht wert.
 ## Features
 
 - **MQTT-Integration**: verbindet sich mit beliebigen MQTT-Brokern; erkennt Sensor-Topics automatisch unter `garden/sensors/{zone}/{type}`
-- **Logik-Engine**: regelbasierte Automatisierung mit AND/OR-Bedingungen, konfigurierbarem Cooldown, Aktionen: Pumpe aktivieren, Alarm senden
-- **Echtzeit-Dashboard**: Chart.js Live-Charts, manuelle Pumpensteuerung, Regelverwaltung; kein Build-Schritt, kein Framework
+- **Logik-Engine**: regelbasierte Automatisierung mit AND/OR-Bedingungen, konfigurierbarem Cooldown, Aktionen: Pumpe starten oder stoppen, Alarm senden (erscheint als Banner in jedem offenen Dashboard und im Log)
+- **Echtzeit-Dashboard**: Chart.js Live-Charts, manuelle Pumpensteuerung, Regel-Editor zum Anlegen und Bearbeiten, Ein/Aus und Löschen; Deutsch oder Englisch nach Browsersprache; kein Build-Schritt, kein Framework
 - **REST-API**: saubere Endpoints, automatisch generierte Swagger-UI unter `/docs`
 - **WebSocket-Stream**: Sensor-Events werden an alle verbundenen Clients gepusht
 - **Cross-Platform**: durchgehend `pathlib.Path`, kein shell-spezifischer Code, `tools/test_sensor.py` als CLI-unabhängiger Simulator
@@ -164,6 +164,8 @@ Vollständige interaktive Docs: **http://localhost:8000/docs**
 ---
 
 ## Beispiel: Automatisierungsregel anlegen
+
+Im Dashboard: **Automatisierungsregeln → Neue Regel**. Dieselbe Regel über die API:
 
 ```bash
 curl -X POST http://localhost:8000/api/rules \

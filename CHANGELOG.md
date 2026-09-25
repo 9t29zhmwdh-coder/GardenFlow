@@ -5,6 +5,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.0] - 2026-09-25
+
+### Added
+
+- A rule editor in the dashboard: create and edit rules with any number of conditions (AND/OR), pump runtime in minutes, alert text and a pause in hours after the rule fires. The README promised rules written "in the browser, no coding required", but the dashboard could only list, toggle and delete them; new rules needed `POST /api/rules`. The editor checks name, zones and numbers before saving and shows the server's reason when a rule is rejected.
+- Rule alerts now appear as a banner in every open dashboard, with the zone, the text and the time. Before, "send alert" only wrote a line to the server log.
+- The dashboard follows the browser language (German or English) until you pick one with the language button.
+- A favicon, which also removes a 404 from every page load.
+
+### Security
+
+- Removed the wildcard CORS policy. The API has no login, and `allow_origins=["*"]` let any website open in the same browser start pumps and delete rules in the background. The dashboard is served from the same origin and never needed CORS.
+
+### Changed
+
+- The README no longer claims ESP32 and Zigbee support or a `last_watered` condition. GardenFlow reads `{"value": ...}` from `garden/sensors/<zone>/<type>`: an ESP32 can publish that with its own firmware, Zigbee2MQTT publishes to its own topics and needs a translator, and rules pause for a set time after firing rather than checking when the bed was last watered.
+- The API reports version 1.1.0; it still said 1.0.8.
+- Screenshots regenerated from a fresh start with the simulator.
+
+---
+
 ## [1.0.10] - 2026-08-04
 
 ### Fixed
