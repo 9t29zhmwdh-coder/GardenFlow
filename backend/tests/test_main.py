@@ -119,11 +119,17 @@ class TestFastAPIMetadata:
         assert "version" in data["info"]
         assert data["info"]["version"] != ""
 
-    def test_cors_middleware_is_applied(self, client):
-        """Test that CORS middleware is configured."""
-        # Test with a GET request to check for CORS headers
-        response = client.get("/api/health")
-        assert response.status_code == 200
-        # CORSMiddleware might be present depending on implementation
-        # Just verify the endpoint works
-        assert response.json()["status"] == "ok"
+    def test_foreign_origin_cannot_drive_the_api(self, client):
+        """A preflight from another site gets no CORS permission, so browsers
+        refuse the cross-site pump and rule requests."""
+        response = client.options(
+            "/api/actuators/bed-1/pump",
+            headers={
+                "Origin": "https://evil.example",
+                "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "content-type",
+            },
+        )
+        assert "access-control-allow-origin" not in response.headers
+        same_origin = client.get("/api/health")
+        assert same_origin.json()["status"] == "ok"

@@ -4,7 +4,6 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from actuators.controller import execute_action
@@ -43,13 +42,9 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# No CORS middleware on purpose: the dashboard is served from this same
+# origin, and the API has no login. A wildcard CORS policy let any website
+# open in the same browser switch pumps and delete rules in the background.
 
 app.include_router(sensors_router)
 app.include_router(actuators_router)
