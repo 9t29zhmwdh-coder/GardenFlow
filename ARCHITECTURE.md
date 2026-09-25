@@ -43,7 +43,7 @@ GardenFlow/
 
 ## Data Flow
 
-1. **Sensors** (ESP32, Zigbee, or the `tools/test_sensor.py` simulator) publish readings to MQTT topics under `garden/sensors/<zone>/<type>`
+1. **Sensors** (for example an ESP32, or the `tools/test_sensor.py` simulator) publish readings to MQTT topics under `garden/sensors/<zone>/<type>`
 2. **Mosquitto** broker receives and routes messages
 3. **backend/mqtt/client.py** subscribes via `aiomqtt`, parses readings, and writes them through `sensors/repository.py` into SQLite
 4. **backend/rules/engine.py** evaluates automation rules (e.g., "if soil_moisture < 30% -> trigger pump") and dispatches actions via `actuators/controller.py`
@@ -63,5 +63,5 @@ garden/actuators/<zone>/<type>/command
 |----------|----------|
 | MQTT (Mosquitto) | Primary sensor/actuator bus |
 | ESP32 (WiFi) | DIY sensors and actuators, publish over MQTT directly (no bundled firmware in this repo) |
-| Zigbee (via Zigbee2MQTT) | Commercial sensors, bridged to MQTT |
+| Zigbee | Not directly: Zigbee2MQTT publishes to `zigbee2mqtt/<device>` in its own format, so it needs a translator that republishes to `garden/sensors/<zone>/<type>` |
 | WebSocket | Real-time dashboard updates |

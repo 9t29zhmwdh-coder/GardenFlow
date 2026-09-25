@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 
 import aiosqlite
 
+from api.websocket import registry
 from database import get_db
 from mqtt.client import publish
 from mqtt.topics import actuator_set_topic
@@ -18,7 +19,18 @@ async def execute_action(action: Action, source: str = "rule") -> None:
     elif action.type == ActionType.deactivate_pump:
         await _pump_off(action.zone, source=source)
     elif action.type == ActionType.send_alert:
-        logger.warning("ALERT [%s]: %s", action.zone, action.message)
+        await send_alert(action.zone, action.message or "")
+
+
+async def send_alert(zone: str, message: str) -> None:
+    """Log the alert and show it in every open dashboard."""
+    logger.warning("ALERT [%s]: %s", zone, message)
+    await registry.broadcast({
+        "type": "alert",
+        "zone": zone,
+        "message": message,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    })
 
 
 async def manual_pump(zone: str, action: str, duration: int | None, source: str = "manual") -> None:

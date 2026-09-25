@@ -25,11 +25,15 @@ GardenFlow ist genau diese Infrastruktur. Sensoren anschliessen, Regel im
 Browser schreiben, Messwerte live mitlesen:
 
 ```
-wenn Bodenfeuchte < 30% und letzte Bewässerung > 6h:
-    Ventil 5 Minuten öffnen
+wenn Bodenfeuchte in beet-1 < 30%:
+    Pumpe in beet-1 5 Minuten laufen lassen
+    danach diese Regel 6 h ruhen lassen
 ```
 
-Spricht ESP32, Zigbee und MQTT. Läuft auf Linux, Windows und macOS per Docker,
+Spricht MQTT: Alles, was `{"value": 27.5}` an `garden/sensors/<Zone>/<Typ>`
+schickt, ist ein Sensor, zum Beispiel ein ESP32 mit ein paar Zeilen Firmware.
+Zigbee-Sensoren brauchen einen kleinen Übersetzer, weil Zigbee2MQTT auf eigenen
+Topics in eigenem Format sendet. Läuft auf Linux, Windows und macOS per Docker,
 unter `http://localhost:8000`.
 
 **Nichts für dich, wenn** du ohnehin Home Assistant betreibst. Das kann das per
@@ -51,8 +55,8 @@ Pflegeaufwand nicht wert.
 ## Features
 
 - **MQTT-Integration**: verbindet sich mit beliebigen MQTT-Brokern; erkennt Sensor-Topics automatisch unter `garden/sensors/{zone}/{type}`
-- **Logik-Engine**: regelbasierte Automatisierung mit AND/OR-Bedingungen, konfigurierbarem Cooldown, Aktionen: Pumpe aktivieren, Alarm senden
-- **Echtzeit-Dashboard**: Chart.js Live-Charts, manuelle Pumpensteuerung, Regelverwaltung; kein Build-Schritt, kein Framework
+- **Logik-Engine**: regelbasierte Automatisierung mit AND/OR-Bedingungen, konfigurierbarem Cooldown, Aktionen: Pumpe starten oder stoppen, Alarm senden (erscheint als Banner in jedem offenen Dashboard und im Log)
+- **Echtzeit-Dashboard**: Chart.js Live-Charts, manuelle Pumpensteuerung, Regel-Editor zum Anlegen und Bearbeiten, Ein/Aus und Löschen; Deutsch oder Englisch nach Browsersprache; kein Build-Schritt, kein Framework
 - **REST-API**: saubere Endpoints, automatisch generierte Swagger-UI unter `/docs`
 - **WebSocket-Stream**: Sensor-Events werden an alle verbundenen Clients gepusht
 - **Cross-Platform**: durchgehend `pathlib.Path`, kein shell-spezifischer Code, `tools/test_sensor.py` als CLI-unabhängiger Simulator
@@ -160,6 +164,8 @@ Vollständige interaktive Docs: **http://localhost:8000/docs**
 ---
 
 ## Beispiel: Automatisierungsregel anlegen
+
+Im Dashboard: **Automatisierungsregeln → Neue Regel**. Dieselbe Regel über die API:
 
 ```bash
 curl -X POST http://localhost:8000/api/rules \

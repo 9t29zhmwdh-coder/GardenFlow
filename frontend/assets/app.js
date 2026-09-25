@@ -10,8 +10,15 @@ const TRANSLATIONS = {
     waitingSensorsSuffix: "to simulate data.",
     manualPump: "Manual pump:", stop: "Stop",
     automationRules: "Automation Rules",
-    noRules: "No rules yet. Create one via",
+    noRules: "No rules yet.",
     confirmDeleteRule: "Delete rule?",
+    newRule: "New rule", editRule: "Edit rule", edit: "Edit", save: "Save", cancel: "Cancel",
+    ruleName: "Name", when: "When", addCondition: "+ Condition", logicAnd: "all conditions (AND)",
+    logicOr: "any condition (OR)", then: "Then", zone: "Zone", durationMin: "Run for (minutes)",
+    message: "Alert text", cooldownHours: "Then pause this rule for (hours)",
+    actionTypes: { activate_pump: "Start pump", deactivate_pump: "Stop pump", send_alert: "Send alert" },
+    errNameRequired: "Give the rule a name.", errZoneRequired: "Every condition and the action need a zone.",
+    errThreshold: "Every condition needs a number.", errSave: "Could not save the rule:", dismiss: "Dismiss",
     sensorTypes: { moisture: "Moisture", temperature: "Temperature", humidity: "Humidity", light: "Light" },
   },
   de: {
@@ -21,8 +28,15 @@ const TRANSLATIONS = {
     waitingSensorsSuffix: "um Daten zu simulieren.",
     manualPump: "Pumpe manuell:", stop: "Stop",
     automationRules: "Automatisierungsregeln",
-    noRules: "Keine Regeln vorhanden. Erstelle eine via",
+    noRules: "Noch keine Regeln.",
     confirmDeleteRule: "Regel löschen?",
+    newRule: "Neue Regel", editRule: "Regel bearbeiten", edit: "Bearbeiten", save: "Speichern", cancel: "Abbrechen",
+    ruleName: "Name", when: "Wenn", addCondition: "+ Bedingung", logicAnd: "alle Bedingungen (UND)",
+    logicOr: "eine der Bedingungen (ODER)", then: "Dann", zone: "Zone", durationMin: "Laufzeit (Minuten)",
+    message: "Alarmtext", cooldownHours: "Danach Regel pausieren für (Stunden)",
+    actionTypes: { activate_pump: "Pumpe starten", deactivate_pump: "Pumpe stoppen", send_alert: "Alarm senden" },
+    errNameRequired: "Gib der Regel einen Namen.", errZoneRequired: "Jede Bedingung und die Aktion brauchen eine Zone.",
+    errThreshold: "Jede Bedingung braucht eine Zahl.", errSave: "Regel konnte nicht gespeichert werden:", dismiss: "Ausblenden",
     sensorTypes: { moisture: "Feuchte", temperature: "Temperatur", humidity: "Luftf.", light: "Licht" },
   },
 };
@@ -35,6 +49,56 @@ const TRANSLATIONS = {
 // unrelated to charts like the language toggle.
 const charts = {};    // { "zone1.moisture": Chart }
 
+const SENSOR_TYPES = ["moisture", "temperature", "humidity", "light"];
+const OPERATORS = ["<", "<=", ">", ">=", "=="];
+const ACTION_TYPES = ["activate_pump", "deactivate_pump", "send_alert"];
+
+// An explicit choice wins; otherwise follow the browser's language.
+function initialLang() {
+  const stored = localStorage.getItem("gardenflow_lang");
+  if (stored === "en" || stored === "de") return stored;
+  return (navigator.language || "en").toLowerCase().startsWith("de") ? "de" : "en";
+}
+
+function blankCondition(zone) {
+  return { sensor_type: "moisture", zone, operator: "<", threshold: 30 };
+}
+
+// The form edits minutes and hours; the API stores seconds.
+function ruleToForm(rule) {
+  return {
+    id: rule.id,
+    name: rule.name,
+    enabled: rule.enabled,
+    condition_logic: rule.condition_logic,
+    conditions: rule.conditions.map(c => ({ ...c })),
+    action: {
+      type: rule.action.type,
+      zone: rule.action.zone,
+      minutes: rule.action.duration_seconds ? rule.action.duration_seconds / 60 : null,
+      message: rule.action.message || "",
+    },
+    cooldownHours: rule.cooldown_seconds / 3600,
+  };
+}
+
+function formToRule(form) {
+  const pump = form.action.type === "activate_pump";
+  return {
+    name: form.name.trim(),
+    enabled: form.enabled,
+    condition_logic: form.condition_logic,
+    conditions: form.conditions.map(c => ({ ...c, zone: c.zone.trim(), threshold: Number(c.threshold) })),
+    action: {
+      type: form.action.type,
+      zone: form.action.zone.trim(),
+      duration_seconds: pump && form.action.minutes ? Math.round(form.action.minutes * 60) : null,
+      message: form.action.type === "send_alert" ? form.action.message : null,
+    },
+    cooldown_seconds: Math.round(Number(form.cooldownHours || 0) * 3600),
+  };
+}
+
 document.addEventListener("alpine:init", () => {
   Alpine.data("gardenflow", () => ({
     connected: false,
@@ -42,7 +106,11 @@ document.addEventListener("alpine:init", () => {
     sensors: {},   // { "zone1.moisture": { value, unit, zone, ts } }
     rules: [],
     zones: [],
-    lang: localStorage.getItem("gardenflow_lang") || "en",
+    lang: initialLang(),
+    alerts: [],       // alerts from rules, newest first, until dismissed
+    ruleForm: null,   // the rule being created or edited, null when the editor is closed
+    ruleError: "",
+    SENSOR_TYPES, OPERATORS, ACTION_TYPES,
 
     // ---- i18n ----
     t(key) {
@@ -78,6 +146,7 @@ document.addEventListener("alpine:init", () => {
       ws.onmessage = (e) => {
         const msg = JSON.parse(e.data);
         if (msg.type === "sensor") this.handleSensor(msg);
+        if (msg.type === "alert") this.alerts.unshift({ ...msg, key: msg.timestamp + msg.zone });
       };
       this.ws = ws;
     },
@@ -150,13 +219,61 @@ document.addEventListener("alpine:init", () => {
       await fetch(`${API}/api/rules/${rule.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(rule),
+        body: JSON.stringify(formToRule({ ...ruleToForm(rule), enabled: rule.enabled })),
       });
     },
     async deleteRule(id) {
       if (!confirm(this.t("confirmDeleteRule"))) return;
       await fetch(`${API}/api/rules/${id}`, { method: "DELETE" });
       await this.loadRules();
+    },
+
+    // ---- Rule editor ----
+    newRule() {
+      const zone = this.zones[0] || "";
+      this.ruleError = "";
+      this.ruleForm = ruleToForm({
+        name: "", enabled: true, condition_logic: "AND",
+        conditions: [blankCondition(zone)],
+        action: { type: "activate_pump", zone, duration_seconds: 300 },
+        cooldown_seconds: 6 * 3600,
+      });
+    },
+    editRule(rule) {
+      this.ruleError = "";
+      this.ruleForm = ruleToForm(rule);
+    },
+    addCondition() {
+      this.ruleForm.conditions.push(blankCondition(this.ruleForm.action.zone));
+    },
+    removeCondition(index) {
+      this.ruleForm.conditions.splice(index, 1);
+    },
+    ruleFormProblem() {
+      const f = this.ruleForm;
+      if (!f.name.trim()) return this.t("errNameRequired");
+      if (!f.action.zone.trim() || f.conditions.some(c => !c.zone.trim())) return this.t("errZoneRequired");
+      if (f.conditions.some(c => c.threshold === "" || Number.isNaN(Number(c.threshold)))) return this.t("errThreshold");
+      return "";
+    },
+    async saveRule() {
+      this.ruleError = this.ruleFormProblem();
+      if (this.ruleError) return;
+      const id = this.ruleForm.id;
+      const res = await fetch(id ? `${API}/api/rules/${id}` : `${API}/api/rules`, {
+        method: id ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formToRule(this.ruleForm)),
+      });
+      if (!res.ok) {
+        this.ruleError = `${this.t("errSave")} ${await apiErrorText(res)}`;
+        return;
+      }
+      this.ruleForm = null;
+      await this.loadRules();
+    },
+    actionLabel(type) {
+      return TRANSLATIONS[this.lang].actionTypes[type] ?? type;
     },
 
     ruleConditionSummary(rule) {
@@ -166,3 +283,13 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 });
+
+async function apiErrorText(res) {
+  try {
+    const body = await res.json();
+    if (Array.isArray(body.detail)) return body.detail.map(d => `${d.loc.slice(1).join(".")}: ${d.msg}`).join("; ");
+    return body.detail || res.statusText;
+  } catch {
+    return `${res.status} ${res.statusText}`;
+  }
+}

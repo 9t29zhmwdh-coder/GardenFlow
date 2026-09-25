@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GardenFlow Dashboard</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>" />
   <link rel="stylesheet" href="/assets/style.css" />
   <!-- CDN: no build step required -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -39,6 +40,17 @@
         <button class="btn secondary" @click="loadRules()">⟳ <span x-text="t('refresh')"></span></button>
       </div>
     </div>
+
+    <!-- Alerts raised by rules -->
+    <template x-for="(a, i) in alerts" :key="a.key">
+      <div class="alert-banner">
+        <span>⚠</span>
+        <strong x-text="a.zone"></strong>
+        <span x-text="a.message"></span>
+        <span style="color:var(--muted);font-size:.75rem" x-text="new Date(a.timestamp).toLocaleTimeString()"></span>
+        <button class="btn secondary" style="margin-left:auto;padding:4px 10px" @click="alerts.splice(i, 1)" x-text="t('dismiss')"></button>
+      </div>
+    </template>
 
     <!-- Sensor cards per zone -->
     <template x-if="zones.length === 0">
@@ -82,11 +94,74 @@
 
     <!-- Rules overview -->
     <div class="card">
-      <h2 x-text="t('automationRules')"></h2>
-      <template x-if="rules.length === 0">
-        <p style="color:var(--muted);font-size:.85rem;margin-top:8px">
-          <span x-text="t('noRules')"></span> <code>POST /api/rules</code>.
-        </p>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <h2 x-text="t('automationRules')"></h2>
+        <button class="btn" x-show="!ruleForm" @click="newRule()">+ <span x-text="t('newRule')"></span></button>
+      </div>
+
+      <!-- Rule editor -->
+      <template x-if="ruleForm">
+        <form class="rule-editor" @submit.prevent="saveRule()" @input="ruleError = ''">
+          <h3 x-text="ruleForm.id ? t('editRule') : t('newRule')"></h3>
+          <label class="field"><span x-text="t('ruleName')"></span>
+            <input type="text" x-model="ruleForm.name" maxlength="80" /></label>
+
+          <div class="field-row">
+            <strong x-text="t('when')"></strong>
+            <select x-model="ruleForm.condition_logic" x-show="ruleForm.conditions.length > 1" style="width:auto">
+              <option value="AND" x-text="t('logicAnd')"></option>
+              <option value="OR" x-text="t('logicOr')"></option>
+            </select>
+          </div>
+          <template x-for="(c, i) in ruleForm.conditions" :key="i">
+            <div class="condition-row">
+              <input type="text" list="known-zones" x-model="c.zone" :placeholder="t('zone')" />
+              <select x-model="c.sensor_type">
+                <template x-for="type in SENSOR_TYPES" :key="type">
+                  <option :value="type" x-text="label(type)" :selected="type === c.sensor_type"></option>
+                </template>
+              </select>
+              <select x-model="c.operator">
+                <template x-for="op in OPERATORS" :key="op">
+                  <option :value="op" x-text="op" :selected="op === c.operator"></option>
+                </template>
+              </select>
+              <input type="number" step="any" x-model="c.threshold" />
+              <button type="button" class="btn secondary" x-show="ruleForm.conditions.length > 1"
+                      @click="removeCondition(i)">✕</button>
+            </div>
+          </template>
+          <button type="button" class="btn secondary" style="align-self:flex-start" @click="addCondition()" x-text="t('addCondition')"></button>
+
+          <div class="field-row"><strong x-text="t('then')"></strong></div>
+          <div class="condition-row">
+            <select x-model="ruleForm.action.type">
+              <template x-for="type in ACTION_TYPES" :key="type">
+                <option :value="type" x-text="actionLabel(type)" :selected="type === ruleForm.action.type"></option>
+              </template>
+            </select>
+            <input type="text" list="known-zones" x-model="ruleForm.action.zone" :placeholder="t('zone')" />
+          </div>
+          <label class="field" x-show="ruleForm.action.type === 'activate_pump'"><span x-text="t('durationMin')"></span>
+            <input type="number" min="0" step="any" x-model="ruleForm.action.minutes" /></label>
+          <label class="field" x-show="ruleForm.action.type === 'send_alert'"><span x-text="t('message')"></span>
+            <input type="text" x-model="ruleForm.action.message" maxlength="200" /></label>
+          <label class="field"><span x-text="t('cooldownHours')"></span>
+            <input type="number" min="0" step="any" x-model="ruleForm.cooldownHours" /></label>
+
+          <p class="form-error" x-show="ruleError" x-text="ruleError"></p>
+          <div style="display:flex;gap:8px">
+            <button type="submit" class="btn" x-text="t('save')"></button>
+            <button type="button" class="btn secondary" @click="ruleForm = null" x-text="t('cancel')"></button>
+          </div>
+          <datalist id="known-zones">
+            <template x-for="zone in zones" :key="zone"><option :value="zone"></option></template>
+          </datalist>
+        </form>
+      </template>
+
+      <template x-if="rules.length === 0 && !ruleForm">
+        <p style="color:var(--muted);font-size:.85rem;margin-top:8px" x-text="t('noRules')"></p>
       </template>
       <template x-for="rule in rules" :key="rule.id">
         <div class="rule-row">
@@ -94,13 +169,14 @@
             <div style="font-weight:600" x-text="rule.name"></div>
             <div style="font-size:.75rem;color:var(--muted)" x-text="ruleConditionSummary(rule)"></div>
             <div style="font-size:.75rem;color:var(--muted)"
-                 x-text="'→ ' + rule.action.type + ' ' + rule.action.zone + (rule.action.duration_seconds ? ' (' + rule.action.duration_seconds + 's)' : '')"></div>
+                 x-text="'→ ' + actionLabel(rule.action.type) + ' ' + rule.action.zone + (rule.action.duration_seconds ? ' (' + rule.action.duration_seconds + 's)' : '')"></div>
           </div>
           <div style="display:flex;align-items:center;gap:12px">
             <label class="toggle">
               <input type="checkbox" :checked="rule.enabled" @change="toggleRule(rule)" />
               <span class="slider"></span>
             </label>
+            <button class="btn secondary" style="padding:5px 10px" @click="editRule(rule)" x-text="t('edit')"></button>
             <button class="btn danger" style="padding:5px 10px" @click="deleteRule(rule.id)">✕</button>
           </div>
         </div>
