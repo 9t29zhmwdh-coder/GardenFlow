@@ -25,11 +25,15 @@ GardenFlow ist genau diese Infrastruktur. Sensoren anschliessen, Regel im
 Browser schreiben, Messwerte live mitlesen:
 
 ```
-wenn Bodenfeuchte < 30% und letzte Bewässerung > 6h:
-    Ventil 5 Minuten öffnen
+wenn Bodenfeuchte in beet-1 < 30%:
+    Pumpe in beet-1 5 Minuten laufen lassen
+    danach diese Regel 6 h ruhen lassen
 ```
 
-Spricht ESP32, Zigbee und MQTT. Läuft auf Linux, Windows und macOS per Docker,
+Spricht MQTT: Alles, was `{"value": 27.5}` an `garden/sensors/<Zone>/<Typ>`
+schickt, ist ein Sensor, zum Beispiel ein ESP32 mit ein paar Zeilen Firmware.
+Zigbee-Sensoren brauchen einen kleinen Übersetzer, weil Zigbee2MQTT auf eigenen
+Topics in eigenem Format sendet. Läuft auf Linux, Windows und macOS per Docker,
 unter `http://localhost:8000`.
 
 **Nichts für dich, wenn** du ohnehin Home Assistant betreibst. Das kann das per

@@ -23,12 +23,16 @@ GardenFlow is that plumbing. Point it at your sensors, write the rule in the
 browser, and watch the readings live:
 
 ```
-if soil_moisture < 30% and last_watered > 6h:
-    open valve for 5 min
+if moisture in bed-1 < 30%:
+    run the pump in bed-1 for 5 min
+    then leave this rule alone for 6 h
 ```
 
-Speaks ESP32, Zigbee and MQTT. Runs on Linux, Windows and macOS through
-Docker, at `http://localhost:8000`.
+Speaks MQTT: anything that publishes `{"value": 27.5}` to
+`garden/sensors/<zone>/<type>` is a sensor, an ESP32 with a few lines of
+firmware for example. Zigbee sensors need a small translator, because
+Zigbee2MQTT publishes to its own topics in its own format. Runs on Linux,
+Windows and macOS through Docker, at `http://localhost:8000`.
 
 **Not for you if** you already run Home Assistant. It does this with an
 add-on, and a second automation stack for the garden alone is not worth the
