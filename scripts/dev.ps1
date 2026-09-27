@@ -1,7 +1,7 @@
 # Lokale Entwicklung ohne Docker (Windows PowerShell)
 if (-not (Test-Path ".venv")) {
     python -m venv .venv
-    .\.venv\Scripts\pip install -r backend\requirements.txt
+    .\.venv\Scripts\python -m pip install --require-hashes -r backend\requirements.lock
 }
 
 $env:MQTT_HOST = "localhost"

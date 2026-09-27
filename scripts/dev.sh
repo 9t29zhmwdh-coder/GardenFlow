@@ -4,7 +4,7 @@ set -e
 
 if [ ! -d ".venv" ]; then
   python3 -m venv .venv
-  .venv/bin/pip install -r backend/requirements.txt
+  .venv/bin/python -m pip install --require-hashes -r backend/requirements.lock
 fi
 
 export MQTT_HOST=localhost
