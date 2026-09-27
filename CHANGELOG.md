@@ -5,6 +5,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.4] - 2026-09-27
+
+### Changed
+
+Dependency and CI updates merged since v1.1.3, each with green checks:
+
+- chore(deps): update pytest requirement in /backend (#48)
+- chore(deps): update pytest-cov requirement in /backend (#58)
+- chore(deps): update pydantic-settings requirement in /backend (#59)
+- chore(ci): bump the actions group with 3 updates (#60)
+
+---
+
 ## [1.1.3] - 2026-09-27
 
 ### Security
