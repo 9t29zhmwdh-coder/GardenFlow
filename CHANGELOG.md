@@ -5,6 +5,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.2] - 2026-09-27
+
+### Changed
+
+Dependency and CI updates merged since v1.1.1, each with green checks:
+
+- chore(deps): update pydantic requirement in /backend (#49)
+- chore(deps): update python-multipart requirement in /backend (#50)
+- chore(deps): update httpx requirement in /backend (#51)
+- chore(deps): update uvicorn requirement in /backend (#52)
+
+---
+
 ## [1.1.1] - 2026-09-27
 
 ### Security
