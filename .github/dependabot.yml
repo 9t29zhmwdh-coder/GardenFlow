@@ -20,3 +20,19 @@ updates:
       python:
         patterns: ["*"]
         update-types: ["minor", "patch"]
+
+  # backend/Dockerfile and docker-compose.yml pin their images by digest;
+  # these keep tag and digest current.
+  - package-ecosystem: "docker"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(docker)"
+
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(docker)"

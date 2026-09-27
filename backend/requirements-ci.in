@@ -1,0 +1,6 @@
+# CI-only tools. requirements-ci.lock pins them together with requirements.lock
+# (bound by -c, so CI tests what the container installs), all with hashes.
+# Regenerate it with the command in the lock's header.
+pip-audit
+uv
+pip

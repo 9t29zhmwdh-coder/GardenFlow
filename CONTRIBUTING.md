@@ -13,7 +13,7 @@
 2. `git clone https://github.com/YOUR_USERNAME/GardenFlow`
 3. `cd GardenFlow`
 4. `python -m venv .venv && source .venv/bin/activate`
-5. `pip install -r backend/requirements.txt`
+5. `pip install --require-hashes -r backend/requirements.lock`
 
 ## Development Workflow
 

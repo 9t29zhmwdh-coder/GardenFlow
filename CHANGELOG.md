@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.3] - 2026-09-27
+
+### Security
+
+- The backend's dependencies are now locked with hashes in `backend/requirements.lock`, and the container, CI, `scripts/dev.sh` and `scripts/dev.ps1` all install from it with `--require-hashes`. Before, each install resolved `requirements.txt` afresh, so the image could ship versions CI never tested, and OpenSSF Scorecard marked every install as unpinned.
+- CI checks that both locks still match `requirements.txt` and runs `pip-audit` against the locked packages; before, no step checked them for known vulnerabilities. Its tools come from `backend/requirements-ci.lock`, bound to the container's lock with `-c`.
+- The Docker images are pinned by digest (`python:3.12-slim` in the Dockerfile, `eclipse-mosquitto:2.0` in `docker-compose.yml`), so a retagged image cannot slip into a build. Dependabot now watches both files and bumps tag and digest together.
+
+---
+
 ## [1.1.2] - 2026-09-27
 
 ### Changed
