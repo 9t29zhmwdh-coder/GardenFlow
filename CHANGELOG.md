@@ -5,6 +5,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.6] - 2026-10-12
+
+### Changed
+
+Dependency and CI updates merged since v1.1.5, each with green checks:
+
+- chore(deps): update uvicorn requirement in /backend (#62)
+- chore(ci): bump the actions group with 4 updates (#65)
+- chore(deps): update fastapi requirement from >=0.141.1 to >=0.143.0 in /backend (#64)
+
+---
+
 ## [1.1.5] - 2026-10-11
 
 ### Fixed
